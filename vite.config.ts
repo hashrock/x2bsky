@@ -1,29 +1,32 @@
-import { defineConfig } from 'vite';
-import { crx, defineManifest } from '@crxjs/vite-plugin';
+import { defineConfig } from "vite";
+import { crx, defineManifest } from "@crxjs/vite-plugin";
 
 // https://vite.dev/config/
 
 const manifest = defineManifest({
   manifest_version: 3,
-  name: 'Chrome拡張機能の練習',
-  version: '1.0.0',
-  description: 'Zenn投稿するChrome拡張機能のサンプルです。',
+  name: "x2bsky",
+  version: "1.0.0",
+  description: "add bluesky cross post button to x.com",
   action: {
-    default_popup: 'index.html',
+    default_popup: "index.html",
   },
   content_scripts: [
     {
-      matches: ['https://x.com/*'],
-      js: ['src/content.ts'],
+      matches: ["https://x.com/*"],
+      js: ["src/content.ts"],
     },
   ],
-  permissions: ['storage'],
+  permissions: ["storage"],
+  icons: {
+    "128": "icon.png",
+  },
 });
 
 export default defineConfig({
   plugins: [crx({ manifest })],
   build: {
-    outDir: 'dist',
+    outDir: "dist",
     emptyOutDir: true,
   },
   server: {

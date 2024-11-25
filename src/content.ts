@@ -73,7 +73,7 @@ async function tweetToObj(): Promise<Tweet[]> {
                 button.textContent = "✅Saved";
               }
             } catch (error) {
-              console.error(error);
+              alert("Error posting to Bluesky: " + error);
             }
           }
         });
