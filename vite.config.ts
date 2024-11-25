@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import { crx, defineManifest } from '@crxjs/vite-plugin';
-import vue from '@vitejs/plugin-vue'
 
 // https://vite.dev/config/
 
@@ -12,10 +11,16 @@ const manifest = defineManifest({
   action: {
     default_popup: 'index.html',
   },
+  content_scripts: [
+    {
+      matches: ['https://x.com/*'],
+      js: ['src/content.ts'],
+    },
+  ],
 });
 
 export default defineConfig({
-  plugins: [crx({ manifest }), vue()],
+  plugins: [crx({ manifest })],
   build: {
     outDir: 'dist',
     emptyOutDir: true,
