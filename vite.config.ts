@@ -17,6 +17,7 @@ const manifest = defineManifest({
       js: ['src/content.ts'],
     },
   ],
+  permissions: ['storage'],
 });
 
 export default defineConfig({

@@ -4,6 +4,8 @@ const blueskyAppPassword = document.getElementById('blueskyAppPassword') as HTML
 
 import { setStorage, getStorage } from './store'
 
+
+
 twitterId.addEventListener('input', () => {
   setStorage('Twitter ID', twitterId.value)
 })
@@ -16,10 +18,13 @@ blueskyAppPassword.addEventListener('input', () => {
 
 async function main() {
   const storage1 = await getStorage('Twitter ID')
+  console.log(storage1)
   twitterId.value = storage1
   const storage2 = await getStorage('Bluesky ID')
+  console.log(storage2)
   blueskyId.value = storage2
   const storage3 = await getStorage('Bluesky App Password')
+  console.log(storage3)
   blueskyAppPassword.value = storage3
 }
 
