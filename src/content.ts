@@ -2,8 +2,27 @@ interface Tweet {
   text: string
   author: string
 }
+import { AtpAgent } from '@atproto/api'
+import { getStorage } from './store'
 
-function tweetToObj() : Tweet[] {
+const agent = new AtpAgent({
+  service: 'https://bsky.social',
+})
+const storage = await getStorage('Bluesky ID')
+const storage2 = await getStorage('Bluesky App Password')
+await agent.login({
+  identifier: await storage,
+  password: await storage2,
+})
+
+async function sendBluesky(tweet: Tweet) {
+  return await agent.post({
+    text: tweet.text,
+  })
+}
+
+
+async function tweetToObj() : Promise<Tweet[]> {
   const result: Tweet[] = []
 
   const articles = document.querySelectorAll('article[data-testid="tweet"]')
@@ -14,11 +33,11 @@ function tweetToObj() : Tweet[] {
     let author = ''
     for (const span of spans) {
       if (span.textContent?.startsWith('@')) {
-        author = span.textContent
+        author = span.textContent?.slice(1)
       }
     }
 
-    if(author === "@hashedrock") {
+    if(author === await getStorage('Twitter ID')) {
       // data-testid="bookmark"
       const bookmark = article.querySelector('[data-testid="bookmark"]')
       // append button after bookmark
@@ -27,7 +46,18 @@ function tweetToObj() : Tweet[] {
       } else{
         const button = document.createElement('button')
         button.classList.add('sendBluesky')
-        button.textContent = 'Save'
+        button.textContent = 'bsky'
+        button.addEventListener('click', async () => {
+          if (text) {
+            const result = await sendBluesky({
+              text: text ,
+              author: author,
+            })
+            if(result) {
+              button.textContent = '✅Saved'
+            }
+          }
+        })
         bookmark?.after(button)
       }
     }
@@ -61,8 +91,8 @@ setInterval(() => {
 
 
 
-function onDocumentHeightChange() {
-  const tweets = tweetToObj()
+async function onDocumentHeightChange() {
+  const tweets = await tweetToObj()
   console.log(tweets);
 }
 

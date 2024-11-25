@@ -6,7 +6,7 @@ function setStorage(key: StorageKey, value: string) {
   chrome.storage.local.set({ [key]: value })
 }
 
-function getStorage(key: StorageKey) {
+function getStorage(key: StorageKey): Promise<string> {
   return chrome.storage.local.get(key)
 }
 
